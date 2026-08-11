@@ -1,0 +1,16 @@
+name: terraform-ci
+on: [push, pull_request]
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: localdev
+        ports: ["5432:5432"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - run: terraform init
+      - run: terraform plan
